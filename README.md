@@ -89,12 +89,14 @@ The Python version follows the same logic:
 - **Iteration:** Each character in the string is processed.
 - **Calculation:** Uses a base of 31 and applies a modulo operation at the end.
 - **Usage of ord():** Converts each character to its Unicode code point.
+
 ```python
 def hash(s, base=31, modulus=101):
     hashValue = 0
     for c in s:
         hashValue = ord(c) + base * hashValue
     return hashValue % modulus
+```
 
 A set of test strings is then hashed, printing both the binary representation (with padding) and the numeric value.
 
