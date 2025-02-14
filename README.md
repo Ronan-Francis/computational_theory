@@ -1,7 +1,7 @@
 # Computational Theory Assessment (2024/2025)
 
 **Ronan Francis (G00403092)**  
-*Computational Theory*
+*Computational Theory with Ian McLoughlin*
 
 ---
 
@@ -102,3 +102,56 @@ A set of test strings is then hashed, printing both the binary representation (w
 Additional code generates unique random alphanumeric strings to test collisions across different bases and moduli. For example, parameters such as 31 and 101 have been tested against alternatives to analyze the collision rate. The commonly used values of 31 (an odd prime that helps avoid information loss on overflow) and 101 (a prime modulus ensuring uniform distribution) emerged as effective choices.
 
 For further reading, refer to [*Effective Java*](https://ia800308.us.archive.org/16/items/java_20230528/Joshua%20Bloch%20-%20Effective%20Java%20%283rd%29%20-%202018.pdf).
+
+
+[Back to Top](#table-of-contents)
+---
+
+## Task 3: SHA256 Padding
+*Details to be added...*
+
+
+[Back to Top](#table-of-contents)
+---
+
+## Task 4: Prime Numbers
+*Details to be added...*
+
+
+[Back to Top](#table-of-contents)
+---
+
+## Task 5: Roots
+*Details to be added...*
+
+
+[Back to Top](#table-of-contents)
+---
+
+## Task 6: Proof of Work
+*Details to be added...*
+
+
+[Back to Top](#table-of-contents)
+---
+
+## Task 7: Turing Machines
+*Details to be added...*
+
+
+[Back to Top](#table-of-contents)
+---
+
+## Task 8: Computational Complexity
+*Details to be added...*
+
+
+[Back to Top](#table-of-contents)
+---
+
+## Conclusion
+*Details to be added...*
+
+
+[Back to Top](#table-of-contents)
+---
