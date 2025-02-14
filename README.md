@@ -107,6 +107,7 @@ For further reading, refer to [*Effective Java*](https://ia800308.us.archive.org
 
 
 [Back to Top](#table-of-contents)
+
 ---
 
 ## Task 3: SHA256 Padding
@@ -114,6 +115,7 @@ For further reading, refer to [*Effective Java*](https://ia800308.us.archive.org
 
 
 [Back to Top](#table-of-contents)
+
 ---
 
 ## Task 4: Prime Numbers
@@ -121,6 +123,7 @@ For further reading, refer to [*Effective Java*](https://ia800308.us.archive.org
 
 
 [Back to Top](#table-of-contents)
+
 ---
 
 ## Task 5: Roots
@@ -128,6 +131,7 @@ For further reading, refer to [*Effective Java*](https://ia800308.us.archive.org
 
 
 [Back to Top](#table-of-contents)
+
 ---
 
 ## Task 6: Proof of Work
@@ -135,6 +139,7 @@ For further reading, refer to [*Effective Java*](https://ia800308.us.archive.org
 
 
 [Back to Top](#table-of-contents)
+
 ---
 
 ## Task 7: Turing Machines
@@ -142,6 +147,7 @@ For further reading, refer to [*Effective Java*](https://ia800308.us.archive.org
 
 
 [Back to Top](#table-of-contents)
+
 ---
 
 ## Task 8: Computational Complexity
@@ -149,6 +155,7 @@ For further reading, refer to [*Effective Java*](https://ia800308.us.archive.org
 
 
 [Back to Top](#table-of-contents)
+
 ---
 
 ## Conclusion
@@ -156,4 +163,5 @@ For further reading, refer to [*Effective Java*](https://ia800308.us.archive.org
 
 
 [Back to Top](#table-of-contents)
+
 ---
