@@ -83,6 +83,7 @@ unsigned hash(char *s) {
         hashval = *s + 31 * hashval;
     return hashval % 101;
 }
+```
 
 ### Python Implementation
 The Python version follows the same logic:
