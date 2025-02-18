@@ -112,7 +112,46 @@ For further reading, refer to [*Effective Java*](https://ia800308.us.archive.org
 ---
 
 ## Task 3: SHA256 Padding
-*Details to be added...*
+### Overview
+
+The SHA256 padding process follows these steps:
+1. **Append a '1' Bit:**  
+   A single `1` bit is appended to the message. In byte form, this is represented by `0x80` (which is a `1` followed by seven `0` bits).
+
+2. **Append Zero Bits:**  
+   Zero bits (i.e., `0x00` bytes) are added so that the total length (excluding the final 8 bytes) is congruent to 56 modulo 64. This ensures that after the final 8 bytes are added, the total length is a multiple of 64 bytes (512 bits).
+
+3. **Append the Length:**  
+   The original message length (in bits) is encoded as a 64-bit big-endian integer and appended to the padded message.
+
+### Implementation
+
+Below is the Python implementation of the SHA256 padding function:
+
+```python
+def sha256_padding(file_path):
+    # Read the file as bytes
+    with open(file_path, 'rb') as f:
+        data = f.read()
+    L = len(data)  # length in bytes
+
+    # Create a bytearray to build the padding
+    padding = bytearray()
+
+    # Append the 0x80 byte (which represents the '1' bit followed by seven '0' bits)
+    padding.append(0x80)
+
+    # Calculate how many zero bytes are needed.
+    # The padded message (excluding the final 8 bytes for length) must be 56 bytes mod 64.
+    pad_len = (56 - (L + 1) % 64) % 64
+    padding.extend(b'\x00' * pad_len)
+
+    # Append the original message length in bits as a 64-bit big-endian integer.
+    bit_length = L * 8
+    padding.extend(bit_length.to_bytes(8, byteorder='big'))
+
+    # Return the padding as a bytes object
+    return bytes(padding)
 
 
 [Back to Top](#table-of-contents)
