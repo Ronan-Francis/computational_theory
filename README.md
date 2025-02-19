@@ -91,14 +91,6 @@ The Python version follows the same logic:
 - **Calculation:** Uses a base of 31 and applies a modulo operation at the end.
 - **Usage of ord():** Converts each character to its Unicode code point.
 
-```python
-def hash(s, base=31, modulus=101):
-    hashValue = 0
-    for c in s:
-        hashValue = ord(c) + base * hashValue
-    return hashValue % modulus
-```
-
 A set of test strings is then hashed, printing both the binary representation (with padding) and the numeric value.
 
 ### Testing and Collision Analysis
@@ -123,36 +115,6 @@ The SHA256 padding process follows these steps:
 
 3. **Append the Length:**  
    The original message length (in bits) is encoded as a 64-bit big-endian integer and appended to the padded message.
-
-### Implementation
-
-Below is the Python implementation of the SHA256 padding function:
-
-```python
-def sha256_padding(file_path):
-    # Read the file as bytes
-    with open(file_path, 'rb') as f:
-        data = f.read()
-    L = len(data)  # length in bytes
-
-    # Create a bytearray to build the padding
-    padding = bytearray()
-
-    # Append the 0x80 byte (which represents the '1' bit followed by seven '0' bits)
-    padding.append(0x80)
-
-    # Calculate how many zero bytes are needed.
-    # The padded message (excluding the final 8 bytes for length) must be 56 bytes mod 64.
-    pad_len = (56 - (L + 1) % 64) % 64
-    padding.extend(b'\x00' * pad_len)
-
-    # Append the original message length in bits as a 64-bit big-endian integer.
-    bit_length = L * 8
-    padding.extend(bit_length.to_bytes(8, byteorder='big'))
-
-    # Return the padding as a bytes object
-    return bytes(padding)
-
 
 [Back to Top](#table-of-contents)
 
