@@ -104,17 +104,58 @@ For further reading, refer to [*Effective Java*](https://ia800308.us.archive.org
 ---
 
 ## Task 3: SHA256 Padding
-### Overview
 
-The SHA256 padding process follows these steps:
-1. **Append a '1' Bit:**  
-   A single `1` bit is appended to the message. In byte form, this is represented by `0x80` (which is a `1` followed by seven `0` bits).
+This task requires the implementation of a Python function that calculates the SHA256 padding for a given file. SHA256 is part of the SHA-2 family, and its padding scheme is specified in the [NIST FIPS 180-4](https://doi.org/10.6028/NIST.FIPS.180-4) standard. The purpose of padding is to ensure that the final message length is a multiple of 512 bits (or 64 bytes).
+
+### What is SHA256 Padding?
+
+SHA256 processes data in fixed-size 512-bit blocks. To correctly handle messages of arbitrary length, the padding steps are as follows:
+
+1. **Append a `1` Bit:**  
+   The first step is to append a single `1` bit to the message. In hexadecimal, this is represented as `0x80` (binary: `10000000`). This operation, described in [RFC 6234](https://datatracker.ietf.org/doc/html/rfc6234), marks the end of the original message.
 
 2. **Append Zero Bits:**  
-   Zero bits (i.e., `0x00` bytes) are added so that the total length (excluding the final 8 bytes) is congruent to 56 modulo 64. This ensures that after the final 8 bytes are added, the total length is a multiple of 64 bytes (512 bits).
+   Next, a series of `0` bits are added so that the total length of the message (after including the `1` bit but before appending the length) is 56 bytes modulo 64. This step ensures that the final 8 bytes, which store the original message length, will complete a full 64-byte block. Detailed background on this alignment can be found on [SHA-2 - Wikipedia](https://en.wikipedia.org/wiki/SHA-2).
 
-3. **Append the Length:**  
-   The original message length (in bits) is encoded as a 64-bit big-endian integer and appended to the padded message.
+3. **Append the Original Message Length:**  
+   Finally, the length of the original message (in bits) is appended as a 64-bit big-endian integer. This final step is required by the [NIST FIPS 180-4](https://doi.org/10.6028/NIST.FIPS.180-4) specification to complete the padding process.
+
+### Reasoning Behind the Approach
+
+- **Message Block Alignment:**  
+  SHA256 works on 512-bit (64-byte) blocks. By ensuring the padded message aligns perfectly with these blocks—as discussed in a [Crypto StackExchange thread](https://crypto.stackexchange.com/questions/79734/how-to-pad-a-448-bit-message-for-sha256)—the algorithm can process the data efficiently.
+
+- **Clear End-of-Message Marker:**  
+  Appending `0x80` (a `1` bit followed by seven `0` bits) unambiguously signals the end of the original message, even when the message itself may end with zero bytes.
+
+- **Ensuring Sufficient Padding:**  
+  The calculation that makes the message (excluding the final 8-byte length field) 56 bytes modulo 64 guarantees that, after appending the 8-byte length field, the total length is a multiple of 64. This precise padding is critical for the SHA256 compression function to work correctly.
+
+- **Standards Compliance:**  
+  Adhering to the padding scheme as detailed in [NIST FIPS 180-4](https://doi.org/10.6028/NIST.FIPS.180-4) and further explained in [RFC 6234](https://datatracker.ietf.org/doc/html/rfc6234) ensures that the implementation is compatible with other SHA256 implementations.
+
+### Testing Overview
+
+A test was set up using Python’s `tempfile` module to create a temporary file with known content (for example, `"abc"`). The function computes the padding, converts it to a hexadecimal string, and compares it against the expected output. For the input `"abc"`, the expected padding in hexadecimal is:
+python 
+```
+80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 18
+```
+
+This output confirms that the padding is generated correctly according to the SHA256 specification.
+
+## Summary
+
+In summary, the Python implementation:
+
+- Reads the file in binary mode.
+- Appends a `1` bit as `0x80`.
+- Pads with zeros so that the message (without the length) is 56 bytes modulo 64.
+- Appends the original message length in bits as a 64-bit big-endian integer.
+
+This method strictly adheres to the SHA256 padding requirements defined in [NIST FIPS 180-4](https://doi.org/10.6028/NIST.FIPS.180-4), as well as the guidelines provided by [RFC 6234](https://datatracker.ietf.org/doc/html/rfc6234) and discussions on [Crypto StackExchange](https://crypto.stackexchange.com/questions/79734/how-to-pad-a-448-bit-message-for-sha256).
+
+
 
 [Back to Top](#table-of-contents)
 
