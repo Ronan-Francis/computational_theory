@@ -230,21 +230,27 @@ The Sieve of Sundaram is an alternative prime generation technique that specific
 
 ## Performance Comparison
 
-| **Algorithm**             | **Time Complexity**    | **Space Complexity** | **Pros**                                         | **Cons**                                                |
-|---------------------------|------------------------|----------------------|--------------------------------------------------|---------------------------------------------------------|
-| **Sieve of Eratosthenes** | O(n log log n)         | O(n)                 | Simple and effective for moderate ranges.      | Memory usage increases with very large limits.          |
-| **Sieve of Sundaram**     | O(n log n)             | O(n)                 | Works on odd numbers only, reducing unnecessary work. | Requires extra steps to obtain the final list of primes. |
+| **Algorithm**                         | **Time Complexity**    | **Space Complexity** | **Pros**                                                                                     | **Cons**                                                           |
+|---------------------------------------|------------------------|----------------------|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
+| **Sieve of Eratosthenes**             | O(n log log n)         | O(n)                 | Simple and effective for moderate ranges.                                                  | Memory usage increases with very large limits.                     |
+| **Sieve of Sundaram**                 | O(n log n)             | O(n)                 | Works on odd numbers only, reducing unnecessary work.                                        | Requires extra steps to obtain the final list of primes.           |
+| **Optimized Trial Division Method**   | O(√n)                  | O(1)                 | Efficient for checking individual numbers; minimal memory overhead.                          | Less suited for generating large lists of primes compared to sieve methods. |
+
+### Optimized Trial Division Method Overview
+
+Every integer can be written as 6 multiplied by some number `k` plus a remainder `i` (where `i` is 0, 1, 2, 3, 4, or 5). If `i` is 0, 2, 3, or 4, then the number is divisible by 2 or 3. Since primes greater than 3 cannot be divisible by 2 or 3, they must leave a remainder of either 1 or 5 when divided by 6 (i.e. they are of the form `6k+1` or `6k+5`). This observation allows the method to check for primality by only testing numbers in these two forms, significantly reducing the number of required checks.
 
 ---
 
 ## Conclusion
 
-Both algorithms offer valuable insights into prime number generation:
+Each algorithm offers valuable insights into prime number generation:
 
 - **Sieve of Eratosthenes** is ideal for scenarios where simplicity and direct implementation are key, especially for moderate-sized ranges.
-- **Sieve of Sundaram** provides a space-efficient alternative by concentrating on odd numbers, albeit with a slightly more complex final transformation.
+- **Sieve of Sundaram** provides a space-efficient alternative by focusing on odd numbers, albeit with an extra transformation step.
+- **Optimized Trial Division Method** is particularly efficient for checking the primality of individual numbers, leveraging mathematical insights to minimize redundant checks.
 
-By understanding these methods, one gains a deeper appreciation of the trade-offs between computational efficiency and implementation complexity in prime number generation.
+Understanding these methods helps highlight the trade-offs between computational efficiency and implementation complexity in prime number generation.
 
 [Back to Top](#task-4-prime-numbers)
 
