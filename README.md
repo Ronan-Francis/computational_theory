@@ -75,6 +75,7 @@ For further details, see [GeeksforGeeks Bitwise Operators](https://www.geeksforg
 This section converts a classic C hash function from *The C Programming Language* into Python. The original function multiplies the current hash value by `31` and adds the ASCII value of the character using `ord()`, then reduces the result modulo `101`.
 
 ### The Original C Hash Function
+The function computes a hash value by iterating over the string and combining character ASCII values with a multiplication factor (traditionally 31) and then reducing via a modulus (typically 101).
 
 ```c
 unsigned hash(char *s) {
@@ -109,16 +110,17 @@ This task requires the implementation of a Python function that calculates the S
 
 ### What is SHA256 Padding?
 
-SHA256 processes data in fixed-size 512-bit blocks. To correctly handle messages of arbitrary length, the padding steps are as follows:
+In this task, you will implement the padding routine for the SHA256 algorithm:
 
-1. **Append a `1` Bit:**  
-   The first step is to append a single `1` bit to the message. In hexadecimal, this is represented as `0x80` (binary: `10000000`). This operation, described in [RFC 6234](https://datatracker.ietf.org/doc/html/rfc6234), marks the end of the original message.
+- **File Input:**  
+  Open and read the file in binary mode.
 
-2. **Append Zero Bits:**  
-   Next, a series of `0` bits are added so that the total length of the message (after including the `1` bit but before appending the length) is 56 bytes modulo 64. This step ensures that the final 8 bytes, which store the original message length, will complete a full 64-byte block. Detailed background on this alignment can be found on [SHA-2 - Wikipedia](https://en.wikipedia.org/wiki/SHA-2).
+- **Padding Steps:**  
+  1. Append a single `0x80` byte to signal the end of the original message.
+  2. Append enough `0x00` bytes so that the total length (excluding the length field) is congruent to 56 modulo 64.
+  3. Append the original message length in bits as an 8-byte (64-bit) big-endian integer.
 
-3. **Append the Original Message Length:**  
-   Finally, the length of the original message (in bits) is appended as a 64-bit big-endian integer. This final step is required by the [NIST FIPS 180-4](https://doi.org/10.6028/NIST.FIPS.180-4) specification to complete the padding process.
+The resulting padding should be returned in hexadecimal format.
 
 ### Reasoning Behind the Approach
 
@@ -134,17 +136,7 @@ SHA256 processes data in fixed-size 512-bit blocks. To correctly handle messages
 - **Standards Compliance:**  
   Adhering to the padding scheme as detailed in [NIST FIPS 180-4](https://doi.org/10.6028/NIST.FIPS.180-4) and further explained in [RFC 6234](https://datatracker.ietf.org/doc/html/rfc6234) ensures that the implementation is compatible with other SHA256 implementations.
 
-### Testing Overview
-
-A test was set up using Python’s `tempfile` module to create a temporary file with known content (for example, `"abc"`). The function computes the padding, converts it to a hexadecimal string, and compares it against the expected output. For the input `"abc"`, the expected padding in hexadecimal is:
-python 
-```
-80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 18
-```
-
-This output confirms that the padding is generated correctly according to the SHA256 specification.
-
-## Summary
+### Summary
 
 In summary, the Python implementation:
 
@@ -161,11 +153,101 @@ This method strictly adheres to the SHA256 padding requirements defined in [NIST
 
 ---
 
-## Task 4: Prime Numbers
-*Details to be added...*
+# Task 4: Prime Numbers
 
+In this task, we explore two distinct methods for generating the first 100 prime numbers. Prime numbers, which are greater than 1 and divisible only by 1 and themselves, serve as the fundamental building blocks of number theory and are pivotal in areas like cryptography.
 
-[Back to Top](#table-of-contents)
+---
+
+## Overview
+
+Prime numbers play a critical role in mathematics, particularly because of the [Fundamental Theorem of Arithmetic](https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic). They not only underpin many theoretical aspects of mathematics but also drive modern cryptographic techniques, such as RSA encryption. This task demonstrates two different algorithms to generate prime numbers, allowing for a discussion on algorithmic strategies, performance differences, and optimizations.
+
+---
+
+## Method 1: Sieve of Eratosthenes
+
+### Concept
+
+The Sieve of Eratosthenes is a classic algorithm that efficiently finds all primes up to a specified limit. The method works by iteratively marking multiples of each prime, starting with 2, and then collecting the numbers that remain unmarked.
+
+### Steps
+
+1. **Initialization:**  
+   Create an array (or list) of boolean values for all numbers up to the desired limit, marking 0 and 1 as non-prime.
+
+2. **Marking Multiples:**  
+   For each number starting at 2 up to the square root of the limit:
+   - If the number is still marked as prime, mark all its multiples as non-prime.
+
+3. **Collection:**  
+   After the marking process, gather all indices that remain marked as prime. Given that the 100th prime is 541, the limit is set just above this (e.g., 542) to ensure sufficient primes are captured.
+
+### Advantages
+
+- **Efficiency:**  
+  Well-suited for generating primes in a moderate range.
+- **Simplicity:**  
+  The algorithm is straightforward to implement and understand.
+
+### Considerations
+
+- **Memory Usage:**  
+  Although efficient for small to medium ranges, the space requirement can become a constraint for very large limits.
+
+---
+
+## Method 2: Sieve of Sundaram
+
+### Concept
+
+The Sieve of Sundaram is an alternative prime generation technique that specifically targets odd numbers, thus reducing the number of elements to process. It removes numbers based on a specific arithmetic form, and then transforms the remaining list into prime numbers.
+
+### Steps
+
+1. **Setup:**  
+   Define an upper bound based on the requirement to generate at least 100 primes. The algorithm works with a list of integers representing potential candidates.
+
+2. **Elimination Process:**  
+   Remove numbers that fit the form `i + j + 2ij` for valid pairs `(i, j)`, effectively filtering out composite numbers.
+
+3. **Transformation:**  
+   Convert the remaining candidates by applying the transformation `2x + 1` to obtain the final list of prime numbers.
+
+### Advantages
+
+- **Reduced Computation:**  
+  Focuses only on odd numbers, which cuts down on unnecessary checks.
+- **Space Efficiency:**  
+  Generally uses less memory by eliminating even numbers upfront.
+
+### Considerations
+
+- **Extra Steps:**  
+  Requires an additional transformation step to convert candidates into actual primes.
+
+---
+
+## Performance Comparison
+
+| **Algorithm**             | **Time Complexity**    | **Space Complexity** | **Pros**                                         | **Cons**                                                |
+|---------------------------|------------------------|----------------------|--------------------------------------------------|---------------------------------------------------------|
+| **Sieve of Eratosthenes** | O(n log log n)         | O(n)                 | Simple and effective for moderate ranges.      | Memory usage increases with very large limits.          |
+| **Sieve of Sundaram**     | O(n log n)             | O(n)                 | Works on odd numbers only, reducing unnecessary work. | Requires extra steps to obtain the final list of primes. |
+
+---
+
+## Conclusion
+
+Both algorithms offer valuable insights into prime number generation:
+
+- **Sieve of Eratosthenes** is ideal for scenarios where simplicity and direct implementation are key, especially for moderate-sized ranges.
+- **Sieve of Sundaram** provides a space-efficient alternative by concentrating on odd numbers, albeit with a slightly more complex final transformation.
+
+By understanding these methods, one gains a deeper appreciation of the trade-offs between computational efficiency and implementation complexity in prime number generation.
+
+[Back to Top](#task-4-prime-numbers)
+
 
 ---
 
